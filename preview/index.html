@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SNT Defense — Scraped Site Preview</title>
+  <style>
+    :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; background: #0c1117; color: #edf2f7; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    header { position: sticky; top: 0; z-index: 2; padding: 18px 24px; background: rgba(12,17,23,.94); border-bottom: 1px solid #27313d; backdrop-filter: blur(12px); }
+    header h1 { margin: 0 0 4px; font-size: 20px; }
+    header p { margin: 0; color: #9aa9b8; font-size: 13px; }
+    main { display: grid; grid-template-columns: 280px minmax(0, 1fr); min-height: calc(100vh - 78px); }
+    nav { padding: 20px; border-right: 1px solid #27313d; background: #101720; }
+    nav button { width: 100%; margin: 0 0 8px; padding: 12px; color: #d9e2ec; text-align: left; background: #17212c; border: 1px solid #2a3948; border-radius: 8px; cursor: pointer; }
+    nav button:hover, nav button.active { border-color: #e24a3b; background: #202b37; }
+    article { padding: 32px clamp(24px, 5vw, 72px) 80px; max-width: 1180px; }
+    .eyebrow { color: #ff7568; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    h2 { margin: 8px 0; font-size: clamp(30px, 5vw, 58px); }
+    .source { color: #9aa9b8; word-break: break-all; }
+    .source a { color: #89bffd; }
+    section { margin-top: 36px; }
+    section h3 { padding-bottom: 8px; border-bottom: 1px solid #27313d; }
+    .text { white-space: pre-wrap; line-height: 1.7; color: #ced8e3; }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+    figure { margin: 0; padding: 10px; background: #151e28; border: 1px solid #27313d; border-radius: 10px; overflow: hidden; }
+    figure img { width: 100%; height: 180px; object-fit: contain; background: #fff; border-radius: 5px; }
+    figcaption { margin-top: 8px; color: #91a1b1; font-size: 11px; overflow-wrap: anywhere; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    td, th { padding: 10px; text-align: left; vertical-align: top; border-bottom: 1px solid #27313d; }
+    td:last-child { overflow-wrap: anywhere; }
+    .placeholder { color: #ff8e84; font-weight: 700; }
+    @media (max-width: 760px) { main { grid-template-columns: 1fr; } nav { position: static; border-right: 0; border-bottom: 1px solid #27313d; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>SNT Defense scraped-site preview</h1>
+    <p>Local archive generated from the public website. This is source material for reconstruction, not the finished replacement.</p>
+  </header>
+  <main>
+    <nav id="pages" aria-label="Scraped pages"></nav>
+    <article id="page"><p>Loading scraped content…</p></article>
+  </main>
+  <script>
+    const nav = document.querySelector('#pages');
+    const article = document.querySelector('#page');
+    const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
+    const basename = url => { try { return new URL(url).pathname || '/'; } catch { return url; } };
+
+    function render(page, button) {
+      document.querySelectorAll('nav button').forEach(item => item.classList.remove('active'));
+      button.classList.add('active');
+      const images = page.images.map(image => `<figure><img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt || '')}" loading="lazy"><figcaption>${escapeHtml(image.src)}<br>Alt: ${escapeHtml(image.alt || '(missing)')}</figcaption></figure>`).join('');
+      const links = page.links.map(link => `<tr><td>${escapeHtml(link.text || '(no text)')}</td><td class="${!link.href || link.href === '#' ? 'placeholder' : ''}">${escapeHtml(link.href || '(empty)')}</td></tr>`).join('');
+      article.innerHTML = `
+        <div class="eyebrow">Scraped page</div>
+        <h2>${escapeHtml(page.title || 'Untitled')}</h2>
+        <p class="source"><a href="${escapeHtml(page.url)}" target="_blank" rel="noreferrer">${escapeHtml(page.url)}</a></p>
+        <section><h3>Heading structure</h3>${page.headings.map(h => `<div>H${h.level}: ${escapeHtml(h.text)}</div>`).join('')}</section>
+        <section><h3>Visible text</h3><div class="text">${escapeHtml(page.text)}</div></section>
+        <section><h3>Images (${page.images.length})</h3><div class="gallery">${images}</div></section>
+        <section><h3>Links (${page.links.length})</h3><table><thead><tr><th>Label</th><th>Destination</th></tr></thead><tbody>${links}</tbody></table></section>`;
+    }
+
+    fetch('/data/scraped-content.json')
+      .then(response => response.json())
+      .then(pages => pages.forEach((page, index) => {
+        const button = document.createElement('button');
+        button.textContent = `${page.title || 'Untitled'} — ${basename(page.url)}`;
+        button.addEventListener('click', () => render(page, button));
+        nav.appendChild(button);
+        if (index === 0) render(page, button);
+      }))
+      .catch(error => { article.textContent = `Unable to load scrape: ${error.message}`; });
+  </script>
+</body>
+</html>

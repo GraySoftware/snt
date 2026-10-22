@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "audit": "node scripts/audit-site.cjs",
+    "preview": "node scripts/serve-preview.cjs",
     "test": "playwright test"
   },
   "keywords": [],
