@@ -1,5 +1,12 @@
 const A='https://cdn.prod.website-files.com/67e08b44d7e9762ca9d6f1c6/';
 const content=document.querySelector('#content');
+const weapons=[
+  {id:'k13',tab:'K13 Rifle',name:'K13',category:'Special Operations Rifle',caliber:'5.56 × 45mm NATO',image:'https://www.sntmotiv.com/cn/images/business/defense_caimg08.jpg?v=260116',alt:'SNT K13 rifle in profile',specs:[['Caliber','5.56 × 45mm NATO'],['Operating system','Short-stroke gas piston'],['Barrel','265 / 292 / 368mm'],['Weight','3.0 kg ±10%'],['Overall length','750–810mm']]},
+  {id:'k2',tab:'K2 / K2C1',name:'K2 / K2C1',category:'Assault Rifle',caliber:'5.56 × 45mm NATO',image:A+'67e436bca9612959b41c98b9_prod%201-p-1600.png',alt:'SNT K2 and K2C1 rifles in profile',specs:[['Caliber','5.56 × 45mm NATO'],['Operating system','Gas operated (gas piston)'],['Barrel','465mm / 18.3 in'],['Weight','K2 3.4kg · K2C1 3.5kg'],['Overall length','K2 730/980mm · K2C1 730/940–1,014mm']]},
+  {id:'k2c',tab:'K2C',name:'K2C',category:'Carbine',caliber:'5.56 × 45mm NATO',image:'https://www.sntmotiv.com/cn/images/business/defense_caimg12.jpg?v=211105',alt:'SNT K2C carbine in profile',specs:[['Caliber','5.56 × 45mm NATO'],['Operating system','Gas operated (gas piston)'],['Barrel','310mm / 12.2 in'],['Weight','3.3 kg ±5%'],['Overall length','630mm / 777–875mm']]},
+  {id:'k14',tab:'K14',name:'K14',category:'Sniper Rifle',caliber:'7.62 × 51mm (.308 Win)',image:'https://www.sntmotiv.com/eng/images/business/defense_caimg19.jpg?v=231030',alt:'SNT K14 sniper rifle in profile',specs:[['Caliber','7.62 × 51mm (.308 Win)'],['Operating system','Bolt action'],['Barrel','609.6mm / 24 in'],['Weight','7.2 kg ±5%'],['Overall length','Under 1,200mm']]},
+  {id:'stsm21',tab:'STSM21',name:'STSM21',category:'Submachine Gun',caliber:'9 × 19mm',image:'https://www.sntmotiv.com/eng/images/business/defense_caimg40.jpg?v=231030',alt:'SNT STSM21 submachine gun in profile',specs:[['Caliber','9 × 19mm'],['Operating system','Delayed blowback'],['Barrel','165mm / 6.5 in'],['Weight','2.8 kg ±5%'],['Overall length','610–670mm']]}
+];
 const routes={
   '/':home,
   '/kor':home,
@@ -25,10 +32,22 @@ function home(){setPage('home','Home',`
   </div></div></section>
   <section class="split"><div class="split__image" role="img" aria-label="SNT manufacturing"></div><div class="split__content"><div class="section-kicker">SNT Defense</div><h2>Precision built over decades</h2><p>The original site mixes content from several SNT businesses. This rebuild preserves the strongest verified material while establishing a clean foundation for corrected SNT Defense copy.</p><a class="button" href="/about">Company overview</a></div></section>`)}
 function card(no,title,img,text){return `<article class="business-card" style="background-image:url('${A+img}')"><small>${no}</small><h3>${title}</h3><p>${text}</p></article>`}
-function firearms(){setPage('firearms','Firearms',`
-  <section class="hero hero--sub hero--firearms"><div class="hero__inner"><h1>Category: Rifles</h1><p>K2 / K2C1</p></div></section>
-  <nav class="category-bar" aria-label="Firearm models"><a href="#k13">K13 Rifle</a><a class="active" href="#k2">K2 / K2C1</a><a href="#k2c">K2C</a><a href="#k14">K14</a><a href="#stsm21">STSM21</a></nav>
-  <section class="product" id="k2"><div class="wrap"><h2>K2 / K2C1</h2><p class="product-subtitle">5.56 × 45mm (NATO)</p><img class="product-shot" src="${A+'67e436bca9612959b41c98b9_prod%201-p-1600.png'}" alt="K2 / K2C1 rifle profile"><div class="specs"><div class="spec"><span>Caliber</span><strong>5.56 × 45mm NATO</strong></div><div class="spec"><span>Operating system</span><strong>Gas operated</strong></div><div class="spec"><span>Barrel</span><strong>465mm / 18.3 in</strong></div><div class="spec"><span>Weight</span><strong>3.4–3.5 kg</strong></div></div><div class="notice">Product details are reconstructed from the public website and should be verified against approved company materials before publication.</div></div></section>`)}
+function firearms(){
+  const requested=location.hash.slice(1).toLowerCase();
+  const selected=weapons.find(item=>item.id===requested)||weapons.find(item=>item.id==='k2');
+  setPage('firearms',selected.name,`
+    <section class="hero hero--sub hero--firearms"><div class="hero__inner"><div class="hero-eyebrow">Firearms</div><h1>${selected.category}</h1><p>${selected.name}</p></div></section>
+    <nav class="category-bar" aria-label="Firearm models" role="tablist">${weapons.map(item=>`<button type="button" role="tab" aria-selected="${item.id===selected.id}" class="${item.id===selected.id?'active':''}" data-firearm="${item.id}">${item.tab}</button>`).join('')}</nav>
+    ${productPanel(selected)}`);
+  document.querySelectorAll('[data-firearm]').forEach(button=>button.addEventListener('click',()=>selectFirearm(button.dataset.firearm)));
+}
+function productPanel(item){return `<section class="product" id="${item.id}" aria-live="polite"><div class="wrap"><div class="product-heading"><div><div class="section-kicker">${item.category}</div><h2>${item.name}</h2><p class="product-subtitle">${item.caliber}</p></div><span class="product-count">${String(weapons.indexOf(item)+1).padStart(2,'0')} / ${String(weapons.length).padStart(2,'0')}</span></div><div class="product-image-stage"><img class="product-shot" src="${item.image}" alt="${item.alt}"></div><div class="specs">${item.specs.map(spec=>`<div class="spec"><span>${spec[0]}</span><strong>${spec[1]}</strong></div>`).join('')}</div><p class="product-source">Specifications and imagery: <a href="https://www.sntmotiv.com/eng/business/defense.html" target="_blank" rel="noopener">SNT Motiv defense catalog</a>.</p></div></section>`}
+function selectFirearm(id){
+  if(!weapons.some(item=>item.id===id))return;
+  history.pushState({},'',`${location.pathname}#${id}`);
+  firearms();
+  document.querySelector('.category-bar').scrollIntoView({block:'start'});
+}
 function about(){setPage('about','About',`
   <section class="hero hero--sub hero--about"><div class="hero__inner"><h1>About Us</h1><p>Audacious challenges. A heritage of precision.</p></div></section>
   <nav class="category-bar" aria-label="About sections"><a class="active" href="#overview">Overview</a><a href="#history">History</a><a href="#values">Values</a><a href="#sites">Business Sites</a></nav>
@@ -45,4 +64,4 @@ function contact(){setPage('contact','Contact',`
 function render(){ const path=location.pathname.replace(/\/$/,'')||'/'; (routes[path]||home)(); }
 document.addEventListener('click',event=>{const link=event.target.closest('a');if(!link)return;const url=new URL(link.href,location.href);if(url.origin===location.origin){event.preventDefault();history.pushState({},'',url.pathname+url.hash);render();document.querySelector('#primary-nav').classList.remove('open');}});
 document.querySelector('.menu-toggle').addEventListener('click',event=>{const nav=document.querySelector('#primary-nav');const open=nav.classList.toggle('open');event.currentTarget.setAttribute('aria-expanded',String(open));});
-addEventListener('popstate',render); render();
+addEventListener('popstate',render); addEventListener('hashchange',render); render();
