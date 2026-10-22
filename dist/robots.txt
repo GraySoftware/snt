@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://snt-defense-rebuild.steadyorbit.chatgpt.site/sitemap.xml
