@@ -7,6 +7,7 @@ const routes = [
   ['/firearms#k13', 'Special Operations Rifle'],
   ['/about#history', 'About Us'],
   ['/support#quality', 'Support'],
+  ['/certificate/iso-14001', 'ISO 14001 Certificate Archive'],
   ['/contact', 'Contact Us'],
   ['/not-a-real-page', 'Page not found']
 ];
