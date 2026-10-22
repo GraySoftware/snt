@@ -22,7 +22,7 @@ This file tracks anything that could not be verified or requires an SNT business
 
 - **Reuse permission:** Product and company imagery is currently loaded from SNT-controlled public URLs, but explicit reuse/publication permission has not been documented.
 - **Sustainability scope:** Sustainability policies belong to SNT Motiv. Confirm whether they should be presented as policies applicable to SNT Defense in the United States.
-- **Certifications:** Confirm which SNT Motiv certifications apply specifically to defense products and which should appear on the U.S. site.
+- **Certifications:** The official ISO 14001 download includes firearms in scope, but the supplied certificate expired on 2021-12-22. Obtain a current certificate before presenting ISO 14001 as active. Confirm which other SNT Motiv certifications apply specifically to defense products and the U.S. operation.
 - **Privacy and legal pages:** Obtain approved privacy policy, terms, accessibility statement, export-control language, warranty/support language, and copyright owner.
 - **Localization:** `/kor` aliases currently display English. Confirm whether the final site needs Korean content, English-only routes, or a language selector.
 

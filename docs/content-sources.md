@@ -19,6 +19,8 @@ The rebuilt About, Support, and Contact content is based on the following public
 - Ethical management: https://www.sntmotiv.com/eng/sustainability/ethics.html
 - Quality management: https://www.sntmotiv.com/eng/sustainability/quality.html
 - Environmental management: https://www.sntmotiv.com/eng/sustainability/environment.html
+- ISO 14001 certificate PDF: https://www.sntmotiv.com/eng/sustainability/data/ISO14001.zip
+- ISO 14001 certificate preview: https://www.sntmotiv.com/eng/images/sustainability/envir_cer01.jpg
 
 ## Contact
 
