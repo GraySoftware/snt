@@ -1,6 +1,6 @@
 # Open questions and provisional decisions
 
-Last updated: 2026-10-22
+Last updated: 2026-10-23
 
 This file tracks anything that could not be verified or requires an SNT business decision. It is intentionally separate from verified source notes.
 
@@ -20,7 +20,7 @@ This file tracks anything that could not be verified or requires an SNT business
 
 ## Content and legal review
 
-- **Reuse permission:** Product and company imagery is currently loaded from SNT-controlled public URLs, but explicit reuse/publication permission has not been documented.
+- **Reuse permission:** Product and company imagery is now archived in the repository and served locally, but explicit reuse/publication permission has not been documented. Obtain written approval or client-supplied originals before a public launch.
 - **Sustainability scope:** Sustainability policies belong to SNT Motiv. Confirm whether they should be presented as policies applicable to SNT Defense in the United States.
 - **Certifications:** The official ISO 14001 download includes firearms in scope, but the supplied certificate expired on 2021-12-22. Obtain a current certificate before presenting ISO 14001 as active. Confirm which other SNT Motiv certifications apply specifically to defense products and the U.S. operation.
 - **Privacy and legal pages:** Obtain approved privacy policy, terms, accessibility statement, export-control language, warranty/support language, and copyright owner.
@@ -36,5 +36,5 @@ This file tracks anything that could not be verified or requires an SNT business
 ## Firearms
 
 - Firearm specifications were reconstructed from SNT Motiv’s public catalog and should receive technical/legal approval before public launch.
-- Firearm photography and image treatment are intentionally deferred per the project owner’s instruction on 2026-10-22.
+- Firearm photography is now served from locally archived copies of the official public images. Confirm usage rights and request approved high-resolution originals before public launch.
 - Confirm whether the site is informational only or should include dealer, parts, service, warranty, brochure-download, or product-inquiry flows.
