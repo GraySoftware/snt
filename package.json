@@ -5,6 +5,7 @@
   "scripts": {
     "audit": "node scripts/audit-site.cjs",
     "preview": "node scripts/serve-preview.cjs",
+    "verify": "node scripts/verify-rebuild.cjs",
     "test": "playwright test"
   },
   "keywords": [],
