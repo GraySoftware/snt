@@ -27,6 +27,15 @@ async function main() {
     if (heading !== expectedHeading) failures.push(`${route}: expected H1 “${expectedHeading}”, received “${heading}”`);
     const brokenImages = await page.locator('img').evaluateAll(images => images.filter(image => !image.complete || image.naturalWidth === 0).map(image => image.src));
     if (brokenImages.length) failures.push(`${route}: broken images: ${brokenImages.join(', ')}`);
+    const remoteVisuals = await page.evaluate(() => {
+      const urls = [...document.images].map(image => image.currentSrc || image.src);
+      for (const element of document.querySelectorAll('*')) {
+        const background = getComputedStyle(element).backgroundImage;
+        if (background && background !== 'none') urls.push(...[...background.matchAll(/url\(["']?(https?:\/\/[^"')]+)/g)].map(match => match[1]));
+      }
+      return [...new Set(urls.filter(url => /^https?:\/\//.test(url) && new URL(url).origin !== location.origin))];
+    });
+    if (remoteVisuals.length) failures.push(`${route}: externally hosted visual assets: ${remoteVisuals.join(', ')}`);
     const results = await new AxeBuilder({ page }).analyze();
     const severe = results.violations.filter(item => ['critical', 'serious'].includes(item.impact));
     if (severe.length) failures.push(`${route}: accessibility: ${severe.map(item => `${item.id} [${item.nodes.flatMap(node => node.target).join(', ')}]`).join('; ')}`);
@@ -52,7 +61,7 @@ async function main() {
     process.exitCode = 1;
     return;
   }
-  console.log(`Verified ${routes.length} routes, five firearm tabs, section targets, images, and serious/critical accessibility checks.`);
+  console.log(`Verified ${routes.length} routes, five firearm tabs, section targets, locally hosted visual assets, images, and serious/critical accessibility checks.`);
 }
 
 main().catch(error => { console.error(error); process.exitCode = 1; });
